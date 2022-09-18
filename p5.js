@@ -1,7 +1,7 @@
 function setup() {
     createCanvas(1200, 550);
     particles = [];
-    howMany = 10;
+    howMany = 2;
     for (i = 0; i < howMany; i++){
         particles.push(new ParticleYellow)
     }
@@ -20,16 +20,17 @@ function draw() {
     for(let i = 0; i<particles.length; i++){
         for(let j = 0; j<particles.length; j++){
             if (particles[j] == particles[i]) {continue};
-            force = createVector()
-            particles[i].acceleration = createVector(particles[i].position - particles[j].position) * 0.001
-            particles[i].velocity += (particles[i].acceleration * 1)
-            particles[i].position.add(particles[i].velocity)
-            // particles[i].position += (particles[i].velocity)
+            
+            vec = createVector((particles[i].position.x - particles[j].position.x), (particles[i].position.y - particles[j].position.y))
+            force = vec.div(vec.mag())
+            particles[i].acceleration.add(vec)
+            particles[i].velocity.add(particles[i].acceleration.mult(0.01))
+            particles[i].position.sub(particles[i].velocity)
+            if (particles[i].velocity > -0.80 && particles[i].velocity < 0.03) particles[i].acceleration = 0;
+            // line(particles[j].position.x, particles[j].position.y, particles[i].position.x, particles[i].position.y)
         }
         
-        // ellipse(particles[i].xPos, particles[i].yPos, particles[i].width, particles[i].height)
         ellipse(particles[i].position.x, particles[i].position.y, particles[i].width, particles[i].height)
-        console.log(particles[i].position)
     }
   }
 
@@ -48,9 +49,7 @@ class ParticleYellow{
 }
 
 const getRandom = () => {
-    // min = Math.ceil(min);
-    // max = Math.floor(max);
     min = 10
-    max = 400
+    max = 600
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
