@@ -1,7 +1,7 @@
 function setup() {
     createCanvas(1200, 550);
     particles = [];
-    howMany = 2;
+    howMany = 5;
     for (i = 0; i < howMany; i++){
         particles.push(new ParticleYellow)
     }
@@ -12,7 +12,7 @@ let height = 15;
 let xPos = 50;
 let yPos = 50;
 
-multipler = 0.001
+multipler = 0.00001
 
 function draw() {
     background(220);
@@ -22,12 +22,16 @@ function draw() {
             if (particles[j] == particles[i]) {continue};
 
             forceX = (particles[j].x - particles[i].x)
+            forceY = (particles[j].y - particles[i].y)
             
             particles[i].accelerationX = forceX * multipler
+            particles[i].accelerationY = forceY * multipler
 
             particles[i].velocityX += particles[i].accelerationX
+            particles[i].velocityY += particles[i].accelerationY
 
             particles[i].x += particles[i].velocityX
+            particles[i].y += particles[i].velocityY
 
         } 
         // ellipse(particles[i].position.x, particles[i].position.y, particles[i].width, particles[i].height)
